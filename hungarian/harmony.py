@@ -14,19 +14,16 @@
 
 import pynini
 import char
+from util import fst_utf8
 
-C = pynini.string_map([
+C = fst_utf8([
     "b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
     "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z",
-], input_token_type="utf8", output_token_type="utf8")
+])
 
-back_V = pynini.string_map(
-    ["a", "á", "o", "ó", "u", "ú"],
-    input_token_type="utf8", output_token_type="utf8")
-front_rounded_V = pynini.string_map(
-    ["ö", "ő", "ü", "ű"], input_token_type="utf8", output_token_type="utf8")
-neutral_V = pynini.string_map(
-    ["e", "é", "i", "í"], input_token_type="utf8", output_token_type="utf8")
+back_V = fst_utf8(["a", "á", "o", "ó", "u", "ú"])
+front_rounded_V = fst_utf8(["ö", "ő", "ü", "ű"])
+neutral_V = fst_utf8(["e", "é", "i", "í"])
 
 # Archiphonemic vowels
 # Example			| Archiphoneme symbol
@@ -44,15 +41,11 @@ neutral_V = pynini.string_map(
 # example: könyveken
 # third rule: front rounded
 # example: könyvön
-back_transform = pynini.string_map([
-    ("Ö", "o"), ("Ó", "ó"), ("Á", "á"), ("A", "a"), ("O", "o"), ("U", "u"),
-], input_token_type="utf8", output_token_type="utf8")
-front_rounded_transform = pynini.string_map([
-    ("Ö", "ö"),
-], input_token_type="utf8", output_token_type="utf8")
-front_unrounded_transform = pynini.string_map([
-    ("Ö", "e"), ("Ó", "ő"), ("Á", "é"), ("A", "e"), ("O", "e"), ("U", "ü"),
-], input_token_type="utf8", output_token_type="utf8")
+back_transform = fst_utf8(
+    [("Ö", "o"), ("Ó", "ó"), ("Á", "á"), ("A", "a"), ("O", "o"), ("U", "u")])
+front_rounded_transform = fst_utf8([("Ö", "ö")])
+front_unrounded_transform = fst_utf8(
+    [("Ö", "e"), ("Ó", "ő"), ("Á", "é"), ("A", "e"), ("O", "e"), ("U", "ü")])
 
 back_harmony = pynini.cdrewrite(
     back_transform,

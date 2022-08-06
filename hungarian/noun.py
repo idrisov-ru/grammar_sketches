@@ -14,6 +14,7 @@
 
 import pynini
 import harmony
+from util import fst_utf8
 
 EN_HU_dict = pynini.string_file(
     "./dict/en_hu.tsv", input_token_type="utf8", output_token_type="utf8")
@@ -23,9 +24,9 @@ regular_stem = EN_HU_dict @ (pynini.project(EN_HU_dict,
                                             "output") - pynini.project(N_low_v, "input"))
 N_low_v_stem = EN_HU_dict @ N_low_v
 
-NOM = pynini.cross("-NOM", "")
-PL = pynini.cross("-PL", "k")
-ILL = pynini.cross("-ILL", "bA")
+NOM = fst_utf8([("-NOM", "")])
+PL = fst_utf8([("-PL", "k")])
+ILL = fst_utf8([("-ILL", "bA")])
 
 NOUN = ((EN_HU_dict + (NOM | ILL)
         | (N_low_v_stem | regular_stem) + PL + ILL.ques) @ harmony.HARMONY).optimize()

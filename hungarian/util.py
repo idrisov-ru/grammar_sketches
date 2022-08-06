@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Iterable
 import pynini
 
 # priority union function
@@ -20,3 +21,8 @@ def _priority_union(q: pynini.Fst, r: pynini.Fst,
                     sigma: pynini.Fst) -> pynini.Fst:
     complement_domain_q = sigma - pynini.project(q, "input")
     return pynini.union(q, complement_domain_q @ r)
+
+# pynini.union doesn't work with utf8 strings
+# so let's clean corresponding boilerplate a bit
+def fst_utf8(s: Iterable) -> pynini.Fst:
+	return pynini.string_map(s, input_token_type="utf8", output_token_type="utf8")
